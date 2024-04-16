@@ -33,6 +33,17 @@ class Automation
                         this.showAutomationList();
 
                     document.querySelector('#serviceVersion').innerHTML = 'Automation ' + this.status.version;
+                    
+                    if(this.status.hasOwnProperty('states')) {
+                        document.querySelector('.states').innerHTML = '';
+                        for (name in this.status.states)
+                        {
+                            if (this.status.states.hasOwnProperty(name)) 
+                            {
+                                document.querySelector('.states').innerHTML += '<span class="note">' + name + ': ' + this.status.states[name] + '</span>';
+                            }
+                        }
+                    }
                 }
 
                 break;
@@ -491,6 +502,19 @@ class Automation
 
             table.querySelectorAll('th.sort').forEach(cell => cell.addEventListener('click', function() { sortTable(table, this.dataset.index); localStorage.setItem('automationSort', this.dataset.index); }) );
             sortTable(table, localStorage.getItem('automationSort') ?? 0);
+
+            var row = table.querySelector('tbody').insertRow();
+            var cell = row.insertCell();
+            cell.colSpan = "6";
+            cell.classList.add('states');
+            for (name in this.status.states)
+            {
+                if (this.status.states.hasOwnProperty(name)) 
+                {
+                    cell.innerHTML += '<span class="note">' + name + ': ' + this.status.states[name] + '</span>';
+                }
+            }
+
         });
     }
 
